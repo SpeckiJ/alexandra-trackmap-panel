@@ -1,12 +1,12 @@
 import React, { ReactElement, useEffect } from 'react';
-import { PanelProps } from '@grafana/data';
+import { PanelProps, Vector } from '@grafana/data';
 import { getLocationSrv } from '@grafana/runtime';
 import { TrackMapOptions, Position } from 'types';
 import { css, cx } from 'emotion';
 import { stylesFactory } from '@grafana/ui';
 import { FeatureCollection, Feature } from 'geojson';
-import { Map, TileLayer, Marker, Popup, Tooltip, withLeaflet } from 'react-leaflet';
-import { Icon, LeafletEvent, LatLngBounds, LatLngBoundsExpression } from 'leaflet';
+import { Map, TileLayer, Marker, Popup, Tooltip, withLeaflet, GeoJSON } from 'react-leaflet';
+import { Icon, LeafletEvent, LatLngBounds, LatLngBoundsExpression, LatLngExpression } from 'leaflet';
 import './leaflet.css';
 import 'leaflet/dist/leaflet.css';
 import { useRef } from 'react';
@@ -74,6 +74,8 @@ export const TrackMapPanel: React.FC<Props> = ({ options, data, width, height })
   if (!intensities && data.series?.length) {
     intensities = data.series[0].fields.find(f => f.name === 'intensity')?.values.toArray();
   }
+
+  let geojson = data.series[0].fields.find(f => f.name === 'geometry')?.values.toArray()[0];
 
   if (!markerPopups && data.series?.length) {
     markerPopups = data.series[0].fields
@@ -283,6 +285,7 @@ export const TrackMapPanel: React.FC<Props> = ({ options, data, width, height })
         )}
         {options.viewType === 'hex' && <WrappedHexbinLayer {...hexbinOptions} data={hexData} />}
         {(options.viewType === 'marker' || options.viewType === 'ant-marker') && markers}
+        {options.viewType === 'geojson' && <GeoJSON data={geojson} />}
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

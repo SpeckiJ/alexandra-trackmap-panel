@@ -1,4 +1,4 @@
-type ViewType = 'ant' | 'hex' | 'heat' | 'marker' | 'ant-marker';
+type ViewType = 'ant' | 'hex' | 'heat' | 'marker' | 'ant-marker' | 'geojson';
 
 export interface TrackMapOptions {
   text: string;

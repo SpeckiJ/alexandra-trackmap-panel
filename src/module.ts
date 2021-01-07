@@ -76,6 +76,10 @@ export const plugin = new PanelPlugin<TrackMapOptions>(TrackMapPanel).setPanelOp
               value: 'heat',
               label: 'Heatmap',
             },
+            {
+              value: 'geojson',
+              label: 'GeoJSON',
+            },
           ],
         },
       })
